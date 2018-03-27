@@ -250,58 +250,79 @@
     };
 
     /**
-     * finds the client and updates that value
-     * @param {string} key - string refering to the netry key 
-     * @param {object} args - "hwere" condition so that we know what we're updating
-     * @param {string / object} newValue - new value 
+     * TODO
+     * Finds a value within the localstorage entry and updates it
+     * @param {string} key - string refering to the entry key 
+     * @param {string | array | object} args - "where" condition so that we know what we're updating
+     * @param {string | array | object} value - new value 
+     * @return {Promise} 
      */
-    let update = (key, args, newValue) => {
+    let update = (key, args = "", value) => {
         if (!isString(key))
             throw new Error("Expected a string as param 1 on storage.update and " + typeof key + " was given");
 
-        if (!isObject(args))
-            throw new Error("Expected a object as param 2 on storage.update and " + typeof args + " was given");
+        if (!isObject(args) && !isArray(args) && !isString(args))
+            throw new Error("Expected a object, array or string as param 2 on storage.update and " + typeof args + " was given");
 
+        if (!isObject(value) && !isArray(value) && !isString(value))
+            throw new Error("Expected a object, array or string as param 3 on storage.update and " + typeof value + " was given");
 
-        if (!isString(params) && !isObject(params))
-            throw new Error("Expected a string or object as param 3 on storage.update and " + typeof params + " was given");
-
-        let clients = localStorage.getItem(key);
-        clients = (util.isEmpty(clients)) ? clients : JSON.parse(clients);
-
-        clients.map((c, i) => {
-            if (c.id == newValue.id){
-                if (key == "test_clients" && util.isEmpty(newValue.password)){
-                    newValue.password = clients[i].password;
-                }
-
-                clients[i] = newValue;
-                return;
-            }
-        });
-
-        localStorage.setItem(key, JSON.stringify(clients));
-    };
-
-    /**key
-     * removes x record from the collection
-     * @param {int} id - id of the record we want to remove
-     */
-    let remove = (id, key) => {key
-        let clients = localStorage.getItem(collection);
-        clients = (util.isEmpty(clients)) ? clients : JSON.parse(clients);        
+        /* let item = parse(storage.getItem(key));
         
-        clients.map((c, index) => {
-            if (c.id == id){
-                clients.splice(index, 1);
-                return;
-            }
-        })
+        if (isString(item) && isString(value)){
+            item = value;
+        }
+        
+        else if (isObject(item) && isObject(value)){
+            Object.keys(item).forEach(val => {
+                if (val === args){
+                    val = value;
+                }
+            });
+        }
 
-        localStorage.setItem(collection, JSON.stringify(clients));
+        else if (isArray(item)){
+            if (isArray(value))
+                return JSON.stringify([...item, ...value]);
+
+            if (typeof item[0] === typeof value){
+                return JSON.stringify([...item, ...[value]]);
+
+            }
+        }
+
+        localStorage.setItem(key, JSON.stringify(clients)); */
     };
 
     /**
+     * TODO
+     * removes x record from the storage entry
+     * @param {string} key - string refering to the netry key 
+     * @param {object | string | array} - "where" to find which record to delete
+     */
+    let remove = (key, args = "") => {
+        var splice = (item) => {
+            if (isString(item)){
+                return null;
+            }
+
+            if (isObject(item)){
+
+            }
+        };
+
+        if (isBrowser){
+            storage.setItem(key, splice(storage.getItem(key)));
+        }
+        else {
+            storage.getItem(key).then(res => storage.setItem(key, splice(res)));
+        }
+    };
+
+    /**
+     * TODO: 
+        * add react native 
+        * return promise
      * Looks for values with the given params within the entry with the given key
      * @param {string} key - entry we're looking for
      * @param {string / object} params - search params (the entry may be an object or just one string)
@@ -355,4 +376,4 @@
         window.storage = tmp;
     }
     // react native
-})(); 
+})();

@@ -42,14 +42,16 @@ Dependency-less library that acts as a wrapper around local storage for browser 
 ```sh
     storage.erase("array");
 
-    storage.erase("object").then(err => { /* possible errors during deleting LocalStorage entry */})
+    // err - possible errors during deleting LocalStorage entry
+    storage.erase("object").then(err => { /* whatever you want */ })
 ```
 
 ## reset
 ```sh
     storage.reset();
 
-    storage.reset(err => { /* possible errors during deleting all LocalStorage entries */})
+    // err - possible errors during deleting all LocalStorage entries
+    storage.reset(err => { /* whatever you want  */ })
 ```
 Be careful using this as other web apps may also use local storage!
 
@@ -66,6 +68,5 @@ Be careful using this as other web apps may also use local storage!
     storage.insert("string", "aaaaa")
 ```
 
-# [RoadMap](www.github.com/Ribeiro-Tiago/local-storage/projects/1)
 
 # MIT License
